@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <title>here</title>
+    <style>
+        #container {
+            width: 300px;
+            height: 180px;
+        }
+    </style>
+
+</head>
+<body>
+<div id="container"></div>
+</body>
+<script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=1.4.11&key="></script>
+<script>
+    <!-- 创建地图 -->
+    var map = new AMap.Map('container', {
+        zoom: 11,
+        viewMode: '3D'
+    });
+
+    console.log(map);
+
+    AMap.plugin('AMap.ToolBar',function(){//异步加载插件
+        var toolbar = new AMap.ToolBar();
+        map.addControl(toolbar);
+    });
+</script>
+
+</html>
