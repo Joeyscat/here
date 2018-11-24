@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <title>here</title>
     <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
     <style>
@@ -30,15 +31,15 @@
 </body>
 <!--引入高德地图JSAPI -->
 <script type="text/javascript"
-        src="https://webapi.amap.com/maps?v=1.4.11&key=e7ec9e94e3025773562659e5c993e1d1"></script>
+        src="https://webapi.amap.com/maps?v=1.4.11&key="></script>
 <!--引入UI组件库（1.0版本） -->
 <!--<script src="//webapi.amap.com/ui/1.0/main.js"></script>-->
-<script>
+<script type="text/javascript">
     <!-- 创建地图 -->
     var map = new AMap.Map('container', {
         zoom: 18,
         // center:[116.39,39.9],
-        viewMode: '3D',
+        // viewMode: '3D',
         resizeEnable: true
     });
 
@@ -83,7 +84,7 @@
      * AMap.Geolocation插件
      * 实现定位
      */
-    map.plugin('AMap.Geolocation', function () {
+    AMap.plugin('AMap.Geolocation', function () {
         console.log('定位中...');
         var geolocation = new AMap.Geolocation({
             // 是否使用高精度定位,默认true
