@@ -16,20 +16,43 @@
 <div id="container"></div>
 </body>
 <script type="text/javascript"
-        src="https://webapi.amap.com/maps?v=1.4.11&key="></script>
+        src="https://webapi.amap.com/maps?v=1.4.11&key=e7ec9e94e3025773562659e5c993e1d1"></script>
 <script>
     <!-- 创建地图 -->
     var map = new AMap.Map('container', {
-        zoom: 11,
+        zoom: 18,
         viewMode: '3D'
     });
-
-    console.log(map);
 
     AMap.plugin('AMap.ToolBar',function(){//异步加载插件
         var toolbar = new AMap.ToolBar();
         map.addControl(toolbar);
     });
+
+    var center = map.C.center;
+
+    console.log(map);
+    console.log(center);
+
+    AMap.plugin('AMap.Geocoder', function() {
+        var geocoder = new AMap.Geocoder({
+            // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
+            city: '010'
+        });
+
+        var lnglat = [center.lng, center.lat];
+
+        geocoder.getAddress(lnglat, function(status, result) {
+            if (status === 'complete' && result.info === 'OK') {
+                // result为对应的地理位置详细信息
+                console.log('当前位置 ', result.regeocode.formattedAddress);
+            }else {
+                console.log('位置查询失败 ', result)
+            }
+        })
+    })
+
+
 </script>
 
 </html>
