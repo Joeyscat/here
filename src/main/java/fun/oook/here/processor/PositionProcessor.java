@@ -74,6 +74,7 @@ public class PositionProcessor {
         context.setRenderer(renderer);
 
         if (position == null) {
+            response.put("success", false);
             response.put("msg", "position not found");
             return;
         }
