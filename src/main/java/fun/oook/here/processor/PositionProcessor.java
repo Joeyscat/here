@@ -2,6 +2,7 @@ package fun.oook.here.processor;
 
 import fun.oook.here.model.Position;
 import fun.oook.here.service.PositionService;
+import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -12,6 +13,9 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 处理position相关请求
@@ -28,35 +32,61 @@ public class PositionProcessor {
     @Inject
     private PositionService positionService;
 
+    /**
+     * Get random positions
+     *
+     * @param context context
+     */
     @RequestProcessing(value = "/position/example/joey", method = HTTPRequestMethod.GET)
-    public void position(final HTTPRequestContext context) {
+    public void randomPosition(final HTTPRequestContext context) {
         LOGGER.info(context.getRequest().getRequestURI());
 
         JSONRenderer renderer = new JSONRenderer();
-        JSONObject json = new JSONObject();
-        JSONObject po = new JSONObject();
-        po.put("lng", 113.38099);
-        po.put("lat", 23.15);
+        JSONObject response = new JSONObject();
+        response.put("uri", context.getRequest().getRequestURI());
 
-        json.put("success", true);
-        json.put("data", po);
-        json.put("uri", context.getRequest().getRequestURI());
+        try {
+            List<JSONObject> positions = positionService.getPositionsRandomly(5);
+            response.put("data", positions);
+            response.put("success", true);
+        } catch (ServiceException e) {
+            LOGGER.error(e.getMessage());
+            response.put("success", false);
+        }
 
-        renderer.setJSONObject(json);
+        renderer.setJSONObject(response);
         context.setRenderer(renderer);
     }
 
-    @RequestProcessing
+    /**
+     * Add position
+     *
+     * @param context           context
+     * @param requestJSONObject requestJSONObject
+     */
+    @RequestProcessing(value = "/position/add", method = HTTPRequestMethod.POST)
     public void addPosition(final HTTPRequestContext context, final JSONObject requestJSONObject) {
         final JSONRenderer renderer = new JSONRenderer();
+        final JSONObject response = new JSONObject();
+        final JSONObject position = requestJSONObject.optJSONObject(Position.POSITION);
+
+        renderer.setJSONObject(response);
         context.setRenderer(renderer);
-        final JSONObject ret = new JSONObject();
 
-        try {
-            final JSONObject position = requestJSONObject.optJSONObject(Position.POSITION);
-            positionService.addPosition(requestJSONObject);
-        } catch (final ServiceException e) {
-
+        if (position == null) {
+            response.put("msg", "position not found");
+            return;
         }
+        try {
+            String res = positionService.addPosition(requestJSONObject);
+
+            response.put("success", true);
+            response.put("data", res);
+        } catch (final ServiceException e) {
+            LOGGER.error(e.getMessage());
+            response.put("data", "something wrong");
+            response.put("success", false);
+        }
+
     }
 }
