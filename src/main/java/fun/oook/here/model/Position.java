@@ -135,7 +135,6 @@ public final class Position implements Serializable {
     public static final String POSITION_COMMENTABLE = "positionCommentable";
 
 
-
     /**
      * Private constructor.
      */
