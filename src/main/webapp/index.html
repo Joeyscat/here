@@ -5,10 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
     <title>here</title>
+    <link rel="import" href="key.html">
     <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
     <style>
         html, body, #container {
             height: 100%;
+        }
+
+        #container{
+            height: 90%;
         }
 
         .info {
@@ -19,19 +24,19 @@
 </head>
 <body>
 <div id="container"></div>
-<div class="info">
+<!--<div class="info" hidden>
     <h4 id='status'></h4>
     <hr>
     <p id='result'></p>
     <hr>
-</div>
+</div>-->
 
 <button id="show-others">显示其他坐标</button>
 <button id="add-marker">添加点标记</button>
 </body>
 <!--引入高德地图JSAPI -->
-<script type="text/javascript"
-        src="https://webapi.amap.com/maps?v=1.4.11&key="></script>
+<script type="text/javascript" src="js/index.js"></script>
+
 <!--引入UI组件库（1.0版本） -->
 <!--<script src="//webapi.amap.com/ui/1.0/main.js"></script>-->
 <script type="text/javascript">
@@ -47,17 +52,6 @@
         console.log('地图加载完成');
 
     });
-
-    // AMap.ToolBar 工具条，控制地图的缩放、平移等
-    // AMap.plugin('AMap.ToolBar', function () {//异步加载插件
-    //     var toolbar = new AMap.ToolBar();
-    //     map.addControl(toolbar);
-    // });
-    //
-    // var center = map.C.center;
-    //
-    // console.log(map);
-    // console.log(center);
 
 
     // AMap.Geocoder 地理编码与逆地理编码服务，提供地址与坐标间的相互转换
@@ -111,30 +105,36 @@
     //解析定位结果
     function onComplete(data) {
         // data是具体的定位信息
-        console.log('定位成功 ', data);
+        console.log('定位成功 ');
         myPosition.lng = data.position.lng;
         myPosition.lat = data.position.lat;
 
         // map.setCenter(new AMap.LngLat(myPosition.lng, myPosition.lat));
         // addMarker([myPosition.lng, myPosition.lat], startIcon, "我", map);
 
-
-        document.getElementById('status').innerHTML = '定位成功';
-        var str = [];
-        str.push('定位结果：' + data.position);
-        str.push('定位类别：' + data.location_type);
+        console.log('定位结果：' + data.position);
+        console.log('定位类别：' + data.location_type);
         if (data.accuracy) {
-            str.push('精度：' + data.accuracy + ' 米');
-        }//如为IP精确定位结果则没有精度信息
-        str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
-        document.getElementById('result').innerHTML = str.join('<br>');
+            console.log('精度：' + data.accuracy + ' 米');
+        }
+        console.log('是否经过偏移：' + (data.isConverted ? '是' : '否'));
+
+        // document.getElementById('status').innerHTML = '定位成功';
+        // var str = [];
+        // str.push('定位结果：' + data.position);
+        // str.push('定位类别：' + data.location_type);
+        // if (data.accuracy) {
+            // str.push('精度：' + data.accuracy + ' 米');
+        // }//如为IP精确定位结果则没有精度信息
+        // str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
+        // document.getElementById('result').innerHTML = str.join('<br>');
     }
 
     //解析定位错误信息
     function onError(data) {
-        console.log('定位出错 ', data);
-        document.getElementById('status').innerHTML = '定位失败';
-        document.getElementById('result').innerHTML = '失败原因排查信息:' + data.message;
+        console.log('定位失败 ', data.message);
+        // document.getElementById('status').innerHTML = '定位失败';
+        // document.getElementById('result').innerHTML = '失败原因排查信息:' + data.message;
     }
 
 
@@ -162,36 +162,7 @@
 
     };
 
-    // 实例化点标记
-    function addMarker(position, icon, title, map) {
-        marker = new AMap.Marker({
-            icon: icon,
-            position: position,
-            // offset: new AMap.Pixel(-13, -30),
-            title: title
-        });
-        marker.setMap(map);
-    }
 
-    // 创建一个 Icon
-    var startIcon = new AMap.Icon({
-        // 图标尺寸
-        size: new AMap.Size(25, 34),
-        // 图标的取图地址
-        image: '//a.amap.com/jsapi_demos/static/demo-center/icons/dir-marker.png',
-        // 图标所用图片大小
-        imageSize: new AMap.Size(135, 40),
-        // 图标取图偏移量
-        imageOffset: new AMap.Pixel(-9, -3)
-    });
-
-    // 创建一个 icon
-    var endIcon = new AMap.Icon({
-        size: new AMap.Size(25, 34),
-        image: '//a.amap.com/jsapi_demos/static/demo-center/icons/dir-marker.png',
-        imageSize: new AMap.Size(135, 40),
-        imageOffset: new AMap.Pixel(-95, -3)
-    });
 </script>
 
 </html>
