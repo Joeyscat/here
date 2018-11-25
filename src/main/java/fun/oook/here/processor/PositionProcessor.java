@@ -55,7 +55,7 @@ public class PositionProcessor {
         try {
             final JSONObject position = requestJSONObject.optJSONObject(Position.POSITION);
             positionService.addPosition(requestJSONObject);
-        }catch (final ServiceException e){
+        } catch (final ServiceException e) {
 
         }
     }

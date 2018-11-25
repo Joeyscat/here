@@ -30,8 +30,10 @@ public class PositionServiceTest extends AbstractTestCase {
         final JSONObject position = new JSONObject();
         requestJSONObject.put(Position.POSITION, position);
 
-        position.put(Position.POSITION_ABSTRACT,"position-1");
+        position.put(Position.POSITION_ADDRESS,"position-1");
         position.put(Position.POSITION_TITLE,"position-1");
+        position.put(Position.POSITION_LNG,"position-1");
+        position.put(Position.POSITION_LAT,"position-1");
 
         final String positionId = positionService.addPosition(requestJSONObject);
 

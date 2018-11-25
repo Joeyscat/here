@@ -25,14 +25,19 @@ public final class Position implements Serializable {
     public static final String POSITION_TITLE = "positionTitle";
 
     /**
-     * Key of abstract.
+     * Key of content.
      */
-    public static final String POSITION_ABSTRACT = "positionAbstract";
+    public static final String POSITION_LNG = "lng";
 
     /**
      * Key of content.
      */
-    public static final String POSITION_CONTENT = "positionContent";
+    public static final String POSITION_LAT = "lat";
+
+    /**
+     * Key of content.
+     */
+    public static final String POSITION_ADDRESS = "address";
 
     /**
      * Key of created at.
@@ -128,16 +133,6 @@ public final class Position implements Serializable {
      * Key of comment-able.
      */
     public static final String POSITION_COMMENTABLE = "positionCommentable";
-
-    /**
-     * Key of view password.
-     */
-    public static final String POSITION_VIEW_PWD = "positionViewPwd";
-
-    /**
-     * Key of position editor type.
-     */
-    public static final String POSITION_EDITOR_TYPE = "positionEditorType";
 
     //// constants
 

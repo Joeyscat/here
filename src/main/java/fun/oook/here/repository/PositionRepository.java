@@ -1,5 +1,6 @@
 package fun.oook.here.repository;
 
+import fun.oook.here.model.Position;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.annotation.Repository;
 
@@ -11,11 +12,9 @@ import org.b3log.latke.repository.annotation.Repository;
 @Repository
 public class PositionRepository extends AbstractRepository {
     /**
-     * Constructs a repository with the specified name.
-     *
-     * @param name the specified name
+     * Constructor
      */
-    public PositionRepository(String name) {
-        super(name);
+    public PositionRepository() {
+        super(Position.POSITION);
     }
 }

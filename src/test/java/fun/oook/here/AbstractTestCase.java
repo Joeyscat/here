@@ -72,13 +72,8 @@ public abstract class AbstractTestCase {
      */
     public void init() throws Exception {
         final InitService initService = getInitService();
-        final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(Position.POSITION_TITLE, "test@gmail.com");
-        requestJSONObject.put(Position.POSITION_CREATED, "test@gmail.com");
-        requestJSONObject.put(Position.POSITION_CREATED, "test@gmail.com");
-        initService.init(requestJSONObject);
-        final PositionService positionService = getPositionService();
-        Assert.assertNotNull(positionService.addPosition(requestJSONObject));
+
+        initService.init();
     }
 
     /**

@@ -97,48 +97,6 @@
           "description": "位置信息",
           "type": "String",
           "length": 2000
-        },
-        {
-          "name": "positionTags",
-          "description": "位置标签，英文逗号分隔",
-          "type": "String",
-          "length": 2000
-        },
-        {
-          "name": "positionAuthorId",
-          "description": "位置作者 id",
-          "type": "String",
-          "length": 19
-        },
-        {
-          "name": "positionCommentCount",
-          "description": "文章评论计数",
-          "type": "int"
-        },
-        {
-          "name": "positionViewCount",
-          "description": "文章浏览计数",
-          "type": "int"
-        },
-        {
-          "name": "positionHadBeenPublished",
-          "description": "位置是否已经发布过",
-          "type": "boolean"
-        },
-        {
-          "name": "positionIsPublished",
-          "description": "位置是否处于已发布状态",
-          "type": "boolean"
-        },
-        {
-          "name": "positionCreated",
-          "description": "位置创建时间戳",
-          "type": "long"
-        },
-        {
-          "name": "positionRandomDouble",
-          "description": "位置随机数，用于快速查询随机位置列表",
-          "type": "double"
         }
       ]
     }

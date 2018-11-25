@@ -61,7 +61,7 @@ public class InitService {
         }
 
         try (final Connection connection = Connections.getConnection()) {
-            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(1) AS `c` FROM `" + positionRepository.getName() + "`");
+            final PreparedStatement preparedStatement = connection.prepareStatement(String.format("SELECT COUNT(1) AS `c` FROM `%s`", positionRepository.getName()));
             final ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             final int c = resultSet.getInt("c");
@@ -70,7 +70,7 @@ public class InitService {
             return inited;
         } catch (final Exception e) {
             if (!printedInitMsg) {
-                LOGGER.info("Here has not been initialized, please open your browser and visit [" + Latkes.getServePath() + "] to init Here");
+                LOGGER.info("Here has not been initialized, please open your browser and visit [{}] to init Here", Latkes.getServePath());
             }
             printedInitMsg = true;
 
@@ -78,7 +78,7 @@ public class InitService {
         }
     }
 
-    public void init(final JSONObject requestJSONObject) throws ServiceException {
+    public void init() {
         if (isInited()) {
             return;
         }
