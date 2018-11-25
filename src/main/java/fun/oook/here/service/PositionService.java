@@ -25,12 +25,6 @@ public class PositionService {
     @Inject
     private PositionRepository positionRepository;
 
-
-    public List<JSONObject> getAllPositions() {
-
-        return null;
-    }
-
     public String addPosition(JSONObject requestJSONObject) throws ServiceException {
         final Transaction transaction = positionRepository.beginTransaction();
 
@@ -48,6 +42,28 @@ public class PositionService {
             throw new ServiceException(e.getMessage());
         }
     }
+
+    /**
+     * 随即获取位置信息
+     * @param fetchSize 指定获取的数据量
+     * @return positions
+     * @throws ServiceException e
+     */
+    public List<JSONObject> getPositionsRandomly(final int fetchSize) throws ServiceException {
+        final Transaction transaction = positionRepository.beginTransaction();
+
+        try {
+            final List<JSONObject> positions = positionRepository.getRandomly(fetchSize);
+            transaction.commit();
+            return positions;
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
 
     private String addPositionInternal(final JSONObject position) throws RepositoryException {
         String ret = position.optString(Keys.OBJECT_ID);
