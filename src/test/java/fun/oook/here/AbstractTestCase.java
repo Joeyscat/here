@@ -1,17 +1,13 @@
 package fun.oook.here;
 
-import fun.oook.here.model.Position;
 import fun.oook.here.repository.PositionRepository;
 import fun.oook.here.service.InitService;
 import fun.oook.here.service.PositionService;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Discoverer;
-import org.b3log.latke.model.User;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
-import org.json.JSONObject;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 

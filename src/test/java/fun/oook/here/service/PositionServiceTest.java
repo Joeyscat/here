@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 
-@Test(suiteName = "service")
+//@Test(suiteName = "service")
 public class PositionServiceTest extends AbstractTestCase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PositionServiceTest.class);
@@ -22,12 +22,12 @@ public class PositionServiceTest extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test
+//    @Test
     public void init() throws Exception {
         super.init();
     }
 
-    @Test(dependsOnMethods = "init")
+//    @Test(dependsOnMethods = "init")
     public void addPosition() throws ServiceException {
 
         final PositionService positionService = getPositionService();
@@ -46,7 +46,7 @@ public class PositionServiceTest extends AbstractTestCase {
         Assert.assertNotNull(positionId);
     }
 
-    @Test(dependsOnMethods = "init")
+//    @Test(dependsOnMethods = "init")
     public void getPositions() throws ServiceException {
 
         final PositionService positionService = getPositionService();

@@ -30,6 +30,12 @@ public class PositionService {
     @Inject
     private PositionRepository positionRepository;
 
+    /**
+     * Add a position
+     * @param requestJSONObject requestJSONObject
+     * @return result
+     * @throws ServiceException e
+     */
     public String addPosition(JSONObject requestJSONObject) throws ServiceException {
         LOGGER.info("Adding position {}", requestJSONObject);
 

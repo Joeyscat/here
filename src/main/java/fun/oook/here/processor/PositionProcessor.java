@@ -2,9 +2,7 @@ package fun.oook.here.processor;
 
 import fun.oook.here.model.Position;
 import fun.oook.here.service.PositionService;
-import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -15,13 +13,10 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 处理position相关请求
+ * PositionProcessor
  *
  * @author Joey
  * @date 2018-11-25
@@ -100,7 +95,6 @@ public class PositionProcessor {
      */
     @RequestProcessing(value = "/position/{articleId}", method = HTTPRequestMethod.GET)
     public void getPosition(final HTTPRequestContext context, final String positionId) {
-        LOGGER.info(context.getRequest().getRequestURI());
 
         JSONRenderer renderer = new JSONRenderer();
         JSONObject response = new JSONObject();
@@ -124,9 +118,8 @@ public class PositionProcessor {
      *
      * @param context context
      */
-    @RequestProcessing(value = "/position/example/joey", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/position/example/random", method = HTTPRequestMethod.GET)
     public void randomPosition(final HTTPRequestContext context) {
-        LOGGER.info(context.getRequest().getRequestURI());
 
         JSONRenderer renderer = new JSONRenderer();
         JSONObject response = new JSONObject();
