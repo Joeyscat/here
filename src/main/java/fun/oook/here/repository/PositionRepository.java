@@ -2,6 +2,7 @@ package fun.oook.here.repository;
 
 import fun.oook.here.model.Position;
 import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Repository;
 
 /**
@@ -16,5 +17,10 @@ public class PositionRepository extends AbstractRepository {
      */
     public PositionRepository() {
         super(Position.POSITION);
+    }
+
+    @Override
+    public void remove(String id) throws RepositoryException {
+        super.remove(id);
     }
 }
