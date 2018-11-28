@@ -35,7 +35,7 @@ public class PositionProcessor {
 
 
     /**
-     * Create a position
+     * Create a {@link Position}
      *
      * @param context           context
      * @param requestJSONObject requestJSONObject
@@ -67,10 +67,10 @@ public class PositionProcessor {
     }
 
     /**
-     * Delete the position by the specified request
+     * Delete the {@link Position} by the specified request
      *
-     * @param context    the specified http request context
-     * @param positionId the specified http request positionId
+     * @param context    the specified http request context({@link HTTPRequestContext})
+     * @param positionId the specified id for {@link Position}
      */
     @RequestProcessing(value = "/position/{positionId}", method = {HTTPRequestMethod.DELETE, HTTPRequestMethod.POST})
     public void deletePosition(final HTTPRequestContext context, final String positionId) {

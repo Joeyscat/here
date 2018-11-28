@@ -35,9 +35,9 @@ public class PositionService {
     private PositionRepository positionRepository;
 
     /**
-     * Add a position
+     * Add a {@link Position}
      *
-     * @param requestJSONObject requestJSONObject
+     * @param requestJSONObject {@link JSONObject} for {@link Position}
      * @return result
      * @throws ServiceException e
      */
@@ -62,7 +62,7 @@ public class PositionService {
     }
 
     /**
-     * Removes the position by the given id.
+     * Removes the {@link Position} by the given id.
      *
      * @param positionId the given id
      * @throws ServiceException service exception
@@ -93,7 +93,7 @@ public class PositionService {
     }
 
     /**
-     * Get the position by specified id
+     * Get the {@link Position} by specified id
      *
      * @param positionId positionId
      * @return position
@@ -119,7 +119,7 @@ public class PositionService {
     }
 
     /**
-     * Get positions randomly
+     * Get {@link Position} randomly
      *
      * @param fetchSize size
      * @return positions
@@ -143,9 +143,9 @@ public class PositionService {
     }
 
     /**
-     * Add a position
+     * Add a {@link Position}
      *
-     * @param position position
+     * @param position {@link JSONObject} for {@link Position}
      * @return id
      * @throws RepositoryException e
      */
