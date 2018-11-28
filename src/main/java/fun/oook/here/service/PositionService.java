@@ -5,7 +5,6 @@ import fun.oook.here.repository.PositionRepository;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
@@ -18,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
+ * PositionService
+ *
  * @author Joey
  * @date 2018-11-25
  * @since 1.0
@@ -27,11 +28,15 @@ public class PositionService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PositionService.class);
 
+    /**
+     * Repository for {@link Position}
+     */
     @Inject
     private PositionRepository positionRepository;
 
     /**
      * Add a position
+     *
      * @param requestJSONObject requestJSONObject
      * @return result
      * @throws ServiceException e

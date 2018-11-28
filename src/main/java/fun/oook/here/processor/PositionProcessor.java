@@ -27,6 +27,9 @@ public class PositionProcessor {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(PositionProcessor.class);
 
+    /**
+     * Service for {@link Position}
+     */
     @Inject
     private PositionService positionService;
 
