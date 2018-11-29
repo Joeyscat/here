@@ -12,7 +12,7 @@
             height: 100%;
         }
 
-        #container{
+        #container {
             height: 90%;
         }
 
@@ -36,6 +36,7 @@
 </body>
 <!--引入高德地图JSAPI -->
 <script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 
 <!--引入UI组件库（1.0版本） -->
 <!--<script src="//webapi.amap.com/ui/1.0/main.js"></script>-->
@@ -124,7 +125,7 @@
         // str.push('定位结果：' + data.position);
         // str.push('定位类别：' + data.location_type);
         // if (data.accuracy) {
-            // str.push('精度：' + data.accuracy + ' 米');
+        // str.push('精度：' + data.accuracy + ' 米');
         // }//如为IP精确定位结果则没有精度信息
         // str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
         // document.getElementById('result').innerHTML = str.join('<br>');
@@ -141,11 +142,23 @@
 </script>
 <script>
     document.getElementById('show-others').onclick = function () {
-        console.log('显示其他坐标');
+        console.log('获取其他坐标');
 
-        addMarker([myPosition.lng + 0.0001, myPosition.lat + 0.0001], endIcon, "@a", map);
-        addMarker([myPosition.lng + 0.0002, myPosition.lat], endIcon, "@b", map);
-        addMarker([myPosition.lng + 0.0003, myPosition.lat], endIcon, "@c", map);
+        $.ajax({
+            url: "/position/example/random",
+            success: function( result ) {
+                console.log('获取坐标成功 ', result);
+                const positions = result.data;
+                positions.forEach(function (position) {
+                    addMarker([position.lng, position.lat], endIcon, position.address, map);
+                })
+
+            }
+        });
+
+        // addMarker([myPosition.lng + 0.0001, myPosition.lat + 0.0001], endIcon, "@a", map);
+        // addMarker([myPosition.lng + 0.0002, myPosition.lat], endIcon, "@b", map);
+        // addMarker([myPosition.lng + 0.0003, myPosition.lat], endIcon, "@c", map);
 
         // var marker1 = new AMap.Marker({
         //     position: new AMap.LngLat(myPosition.lng, myPosition.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
