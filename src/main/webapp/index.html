@@ -44,7 +44,6 @@
     <!-- 创建地图 -->
     var map = new AMap.Map('container', {
         zoom: 18,
-        // center:[116.39,39.9],
         // viewMode: '3D',
         resizeEnable: true
     });
@@ -55,33 +54,26 @@
     });
 
 
+    // 这个变量用来调用地理编码功能
+    let geoCoder;
     // AMap.Geocoder 地理编码与逆地理编码服务，提供地址与坐标间的相互转换
-    // AMap.plugin('AMap.Geocoder', function () {
-    //     var geocoder = new AMap.Geocoder({
-    //         // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
-    //         city: '010'
-    //     });
-    //
-    //     var lnglat = [center.lng, center.lat];
-    //
-    //     geocoder.getAddress(lnglat, function (status, result) {
-    //         if (status === 'complete' && result.info === 'OK') {
-    //             // result为对应的地理位置详细信息
-    //             console.log('当前位置 ', result.regeocode.formattedAddress);
-    //         } else {
-    //             console.log('位置查询失败 ', result)
-    //         }
-    //     })
-    // });
+    AMap.plugin('AMap.Geocoder', function () {
+        geoCoder = new AMap.Geocoder({
+            // city 指定进行编码查询的城市，支持传入城市名、adcode 和 citycode
+            city: '010'
+        });
+    });
 
-    var myPosition = {};
+    let myPosition = {};
+
+    let geolocation;
     /**
      * AMap.Geolocation插件
      * 实现定位
      */
     AMap.plugin('AMap.Geolocation', function () {
         console.log('定位中...');
-        var geolocation = new AMap.Geolocation({
+        geolocation = new AMap.Geolocation({
             // 是否使用高精度定位,默认true
             enableHighAccuracy: true,
             // 设置定位超时时间,默认:无穷大
@@ -106,12 +98,10 @@
     //解析定位结果
     function onComplete(data) {
         // data是具体的定位信息
-        console.log('定位成功 ');
         myPosition.lng = data.position.lng;
         myPosition.lat = data.position.lat;
 
         // map.setCenter(new AMap.LngLat(myPosition.lng, myPosition.lat));
-        // addMarker([myPosition.lng, myPosition.lat], startIcon, "我", map);
 
         console.log('定位结果：' + data.position);
         console.log('定位类别：' + data.location_type);
@@ -119,6 +109,15 @@
             console.log('精度：' + data.accuracy + ' 米');
         }
         console.log('是否经过偏移：' + (data.isConverted ? '是' : '否'));
+
+        geoCoder.getAddress([myPosition.lng, myPosition.lat], function (status, result) {
+            if (status === 'complete' && result.info === 'OK') {
+                // result为对应的地理位置详细信息
+                console.log('当前位置 ', result.regeocode.formattedAddress);
+            } else {
+                console.log('位置查询失败 ', result)
+            }
+        })
 
         // document.getElementById('status').innerHTML = '定位成功';
         // var str = [];
@@ -134,19 +133,17 @@
     //解析定位错误信息
     function onError(data) {
         console.log('定位失败 ', data.message);
-        // document.getElementById('status').innerHTML = '定位失败';
-        // document.getElementById('result').innerHTML = '失败原因排查信息:' + data.message;
     }
 
 
 </script>
 <script>
-    document.getElementById('show-others').onclick = function () {
+    $('#show-others').on('click', function () {
         console.log('获取其他坐标');
 
         $.ajax({
             url: "/position/example/random",
-            success: function( result ) {
+            success: function (result) {
                 console.log('获取坐标成功 ', result);
                 const positions = result.data;
                 positions.forEach(function (position) {
@@ -155,11 +152,6 @@
 
             }
         });
-
-        // addMarker([myPosition.lng + 0.0001, myPosition.lat + 0.0001], endIcon, "@a", map);
-        // addMarker([myPosition.lng + 0.0002, myPosition.lat], endIcon, "@b", map);
-        // addMarker([myPosition.lng + 0.0003, myPosition.lat], endIcon, "@c", map);
-
         // var marker1 = new AMap.Marker({
         //     position: new AMap.LngLat(myPosition.lng, myPosition.lat),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
         //     title: '这是谁'
@@ -172,9 +164,20 @@
         // var markerList = [marker1, marker2];
         // // 将创建的点标记添加到已有的地图实例：
         // map.add(markerList);
+    });
 
-    };
 
+    $('#add-marker').on('click', function () {
+        console.log('add-marker');
+
+        geolocation.getCurrentPosition(function (status, result) {
+            if (status === 'complete') {
+                onComplete(result)
+            } else {
+                onError(result)
+            }
+        });
+    });
 
 </script>
 
