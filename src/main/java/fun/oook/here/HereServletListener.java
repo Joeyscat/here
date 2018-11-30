@@ -1,8 +1,9 @@
 package fun.oook.here;
 
 import org.b3log.latke.Latkes;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.AbstractServletListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpSessionEvent;
  */
 public class HereServletListener extends AbstractServletListener {
 
-    private static final Logger LOGGER = Logger.getLogger(HereServletListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HereServletListener.class);
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
@@ -47,13 +48,11 @@ public class HereServletListener extends AbstractServletListener {
 
     @Override
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
-        LOGGER.info("Request initialized");
+        LOGGER.debug("FROM: {}", servletRequestEvent.getServletRequest().getRemoteHost());
     }
 
     @Override
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
         super.requestDestroyed(servletRequestEvent);
-
-        LOGGER.info("Request destroyed");
     }
 }
