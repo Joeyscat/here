@@ -1,29 +1,25 @@
 package fun.oook.here.repository;
 
-import fun.oook.here.model.Position;
-import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.annotation.Repository;
+import fun.oook.here.entity.Position;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 /**
- * PositionRepository
- *
  * @author Joey
- * @date 2018-11-25
+ * @date 2018-12-02
  * @since 1.0
  */
-@Repository
-public class PositionRepository extends AbstractRepository {
-    /**
-     * Constructor
-     */
-    public PositionRepository() {
-        super(Position.POSITION);
-    }
+public interface PositionRepository extends JpaRepository<Position, Long> {
 
-    @Override
-    public void remove(String id) throws RepositoryException {
-        // TODO 18-11-27 01:09 Doesn't Work
-        super.remove(id);
-    }
+    /**
+     * List positions randomly
+     *
+     * @param fetchSize size
+     * @return position list
+     */
+    @Query(nativeQuery = true, value = "SELECT * FROM position ORDER BY rand() LIMIT :fetchSize")
+    List<Position> listRandomPosition(@Param("fetchSize") int fetchSize);
 }

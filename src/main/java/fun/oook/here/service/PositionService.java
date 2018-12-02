@@ -1,163 +1,67 @@
 package fun.oook.here.service;
 
-import fun.oook.here.model.Position;
-import fun.oook.here.repository.PositionRepository;
-import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.Inject;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.Ids;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.List;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import fun.oook.here.common.CommonException;
+import fun.oook.here.entity.Position;
 
 /**
- * PositionService
+ * Service for {@link Position}
  *
  * @author Joey
- * @date 2018-11-25
+ * @date 2018-12-02
  * @since 1.0
  */
-@Service
-public class PositionService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(PositionService.class);
+public interface PositionService {
 
     /**
-     * Repository for {@link Position}
-     */
-    @Inject
-    private PositionRepository positionRepository;
-
-    /**
-     * Add a {@link Position}
+     * Get a position by id
      *
-     * @param requestJSONObject {@link JSONObject} for {@link Position}
-     * @return result
-     * @throws ServiceException e
-     */
-    public String addPosition(JSONObject requestJSONObject) throws ServiceException {
-        LOGGER.info("Adding position {}", requestJSONObject);
-
-        final Transaction transaction = positionRepository.beginTransaction();
-
-        try {
-            final JSONObject position = requestJSONObject.getJSONObject(Position.POSITION);
-            final String ret = addPositionInternal(position);
-            transaction.commit();
-
-            return ret;
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            throw new ServiceException(e.getMessage());
-        }
-    }
-
-    /**
-     * Removes the {@link Position} by the given id.
-     *
-     * @param positionId the given id
-     * @throws ServiceException service exception
-     */
-    public void removePosition(String positionId) throws ServiceException {
-        LOGGER.info("Removing position by id [{}]", positionId);
-
-        final Transaction transaction = positionRepository.beginTransaction();
-
-        try {
-            final JSONObject position = positionRepository.get(positionId);
-            if (position == null) {
-                LOGGER.info("Cannot found position [{}]", positionId);
-
-                throw new ServiceException("Cannot found position");
-            }
-            positionRepository.remove(positionId);
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            LOGGER.info("Remove position [{}] failure", positionId);
-            throw new ServiceException(e);
-        }
-
-        LOGGER.info("Removed position [{}]", positionId);
-    }
-
-    /**
-     * Get the {@link Position} by specified id
-     *
-     * @param positionId positionId
+     * @param id id
      * @return position
-     * @throws ServiceException e
+     * @throws CommonException e
      */
-    public JSONObject getPosition(final String positionId) throws ServiceException {
-        LOGGER.info("Getting position by id [{}]", positionId);
-
-        final Transaction transaction = positionRepository.beginTransaction();
-
-        try {
-            final JSONObject position = positionRepository.get(positionId);
-            transaction.commit();
-            LOGGER.info("Got position [{}]", position);
-
-            return position;
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            throw new ServiceException(e.getMessage());
-        }
-    }
+    JSONObject getPositionById(Long id) throws CommonException;
 
     /**
-     * Get {@link Position} randomly
+     * List positions randomly
      *
-     * @param fetchSize size
+     * @param fetchSize list size
      * @return positions
-     * @throws ServiceException e
+     * @throws CommonException e
      */
-    public List<JSONObject> getPositionsRandomly(final int fetchSize) throws ServiceException {
-        LOGGER.info("Getting [{}] positions", fetchSize);
-
-        final Transaction transaction = positionRepository.beginTransaction();
-
-        try {
-            final List<JSONObject> positions = positionRepository.getRandomly(fetchSize);
-            transaction.commit();
-            return positions;
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            throw new ServiceException(e.getMessage());
-        }
-    }
+    JSONArray listPositionsRandom(int fetchSize) throws CommonException;
 
     /**
-     * Add a {@link Position}
+     * Count all positions
      *
-     * @param position {@link JSONObject} for {@link Position}
-     * @return id
-     * @throws RepositoryException e
+     * @return number of positions
+     * @throws CommonException e
      */
-    private String addPositionInternal(final JSONObject position) throws RepositoryException {
-        String ret = position.optString(Keys.OBJECT_ID);
-        if (StringUtils.isBlank(ret)) {
-            ret = Ids.genTimeMillisId();
-            position.put(Keys.OBJECT_ID, ret);
-        }
+    Long countPositions()throws CommonException;
 
-        positionRepository.add(position);
+    /**
+     * Save a position
+     *
+     * @param position position
+     * @return id
+     * @throws CommonException e
+     */
+    String savePosition(Position position) throws CommonException;
 
-        return ret;
-    }
+    /**
+     * Remove a position by id
+     *
+     * @param id id
+     * @throws CommonException e
+     */
+    void removePositionById(Long id) throws CommonException;
+
+    /**
+     * Update a position
+     *
+     * @param position position
+     * @throws CommonException e
+     */
+    void updatePosition(Position position) throws CommonException;
 }
