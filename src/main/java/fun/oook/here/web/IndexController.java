@@ -18,15 +18,11 @@ public class IndexController {
     @GetMapping(value = "/")
     public String index(){
 
-        LOGGER.info(".............................");
-
-        return "index";
+        return "here";
     }
 
     @GetMapping(value = "/key.html")
     public String key(){
-
-        LOGGER.info(".............................");
 
         return "key";
     }

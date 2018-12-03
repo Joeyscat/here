@@ -1,4 +1,4 @@
-package fun.oook.here.repository;
+package fun.oook.here.repository.jpa;
 
 import fun.oook.here.entity.Position;
 import org.springframework.data.jpa.repository.JpaRepository;

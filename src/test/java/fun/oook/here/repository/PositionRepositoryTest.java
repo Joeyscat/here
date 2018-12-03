@@ -2,6 +2,7 @@ package fun.oook.here.repository;
 
 
 import fun.oook.here.entity.Position;
+import fun.oook.here.repository.jpa.PositionRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;

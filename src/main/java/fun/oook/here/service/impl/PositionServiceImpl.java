@@ -3,7 +3,7 @@ package fun.oook.here.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import fun.oook.here.entity.Position;
-import fun.oook.here.repository.PositionRepository;
+import fun.oook.here.repository.jpa.PositionRepository;
 import fun.oook.here.service.PositionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
+ * implementation of {@link PositionService}
+ *
  * @author Joey
  * @date 2018-12-02
  * @since 1.0
@@ -27,24 +29,13 @@ public class PositionServiceImpl implements PositionService {
 
     // TODO 18-12-2 19:37 查询条件做好判空,以免传入null导致全表扫描
 
-    /**
-     * Get a position by id
-     *
-     * @param id id
-     * @return position
-     */
+
     @Override
     public JSONObject getPositionById(Long id) {
 
         return null;
     }
 
-    /**
-     * List positions randomly
-     *
-     * @param fetchSize list size
-     * @return positions
-     */
     @Override
     public JSONArray listPositionsRandom(int fetchSize) {
         List<Position> positions = positionRepository.listRandomPosition(fetchSize);
@@ -55,45 +46,35 @@ public class PositionServiceImpl implements PositionService {
         return positionArray;
     }
 
-    /**
-     * Count all positions
-     *
-     * @return number of positions
-     */
+    @Override
+    public JSONArray listPositionsNearby(int fetchSize) {
+        // 从redis获取缓存
+
+        return null;
+    }
+
     @Override
     public Long countPositions() {
         return null;
     }
 
-    /**
-     * Save a position
-     *
-     * @param position position
-     * @return id
-     */
     @Override
     public String savePosition(Position position) {
 
         Position newPosition = positionRepository.save(position);
 
+        // TODO 18-12-3 21:25 redis 缓存最近的position记录,缓存时间=最新位置保留时间
+        // 用户标记作为key,每个用户只保留一个最新位置
+
+
         return String.valueOf(newPosition.getId());
     }
 
-    /**
-     * Remove a position by id
-     *
-     * @param id id
-     */
     @Override
     public void removePositionById(Long id) {
 
     }
 
-    /**
-     * Update a position
-     *
-     * @param position position
-     */
     @Override
     public void updatePosition(Position position) {
 

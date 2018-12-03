@@ -29,7 +29,7 @@ public class PositionRestController extends AbstractRestController {
 
     @PostMapping(value = "/random", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public RestResponse<JSONArray> random(@RequestParam(defaultValue = "5") int fetchSize) {
+    public RestResponse<JSONArray> random(@RequestParam(defaultValue = "10") int fetchSize) {
 
         return exceptionHandler(() -> {
             LOGGER.info("Getting random positions {}", fetchSize);
@@ -39,6 +39,17 @@ public class PositionRestController extends AbstractRestController {
         });
     }
 
+    @PostMapping(value = "/nearby", produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public RestResponse<JSONArray> nearby(@RequestParam(defaultValue = "10") int fetchSize) {
+
+        return exceptionHandler(() -> {
+            LOGGER.info("Getting nearby positions {}", fetchSize);
+            JSONArray positions = positionService.listPositionsNearby(fetchSize);
+
+            return new RestResponse<JSONArray>().normalRestResponse(positions);
+        });
+    }
 
     @PostMapping(value = "/save", produces = "application/json;charset=UTF-8")
     @ResponseBody
