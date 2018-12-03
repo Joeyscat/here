@@ -4,8 +4,8 @@ spring:
 
   datasource:
     url: jdbc:mysql://106.12.131.119:3306/here_test?useUnicode=yes&characterEncoding=UTF8
-    username: joey
-    password: miao183
+    username:
+    password:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 
