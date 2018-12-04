@@ -41,11 +41,12 @@ public class PositionRestController extends AbstractRestController {
 
     @PostMapping(value = "/nearby", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public RestResponse<JSONArray> nearby(@RequestParam(defaultValue = "10") int fetchSize) {
+    public RestResponse<JSONArray> nearby(@RequestParam() Position position, @RequestParam(defaultValue = "10") int fetchSize) {
 
         return exceptionHandler(() -> {
-            LOGGER.info("Getting nearby positions {}", fetchSize);
-            JSONArray positions = positionService.listPositionsNearby(fetchSize);
+            LOGGER.info("Getting {} nearby positions {}-{}", fetchSize, position.getLng(), position.getLat());
+
+            JSONArray positions = positionService.listPositionsNearby(position, fetchSize);
 
             return new RestResponse<JSONArray>().normalRestResponse(positions);
         });
@@ -53,7 +54,7 @@ public class PositionRestController extends AbstractRestController {
 
     @PostMapping(value = "/save", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public RestResponse<JSONObject> savePosition(@RequestBody Position position) throws URISyntaxException {
+    public RestResponse<JSONObject> savePosition(@RequestBody Position position) {
 
         return exceptionHandler(() -> {
             LOGGER.info("Saving position {}", position);

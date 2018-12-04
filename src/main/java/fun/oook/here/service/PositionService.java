@@ -36,10 +36,11 @@ public interface PositionService {
      * List positions nearby
      *
      * @param fetchSize list size
+     * @param position current position
      * @return positions
      * @throws CommonException e
      */
-    JSONArray listPositionsNearby(int fetchSize) throws CommonException;
+    JSONArray listPositionsNearby(Position position, int fetchSize) throws CommonException;
 
     /**
      * Count all positions

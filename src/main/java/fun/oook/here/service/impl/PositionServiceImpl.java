@@ -2,12 +2,15 @@ package fun.oook.here.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import fun.oook.here.common.CommonException;
 import fun.oook.here.entity.Position;
+import fun.oook.here.entity.User;
 import fun.oook.here.repository.jpa.PositionRepository;
 import fun.oook.here.service.PositionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +33,10 @@ public class PositionServiceImpl implements PositionService {
     // TODO 18-12-2 19:37 查询条件做好判空,以免传入null导致全表扫描
 
 
+    @Autowired
+    private RedisTemplate<String, Position> positionRedisTemplate;
+
+
     @Override
     public JSONObject getPositionById(Long id) {
 
@@ -47,7 +54,7 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
-    public JSONArray listPositionsNearby(int fetchSize) {
+    public JSONArray listPositionsNearby(Position position, int fetchSize) {
         // 从redis获取缓存
 
         return null;
@@ -61,11 +68,17 @@ public class PositionServiceImpl implements PositionService {
     @Override
     public String savePosition(Position position) {
 
+        if (position == null) {
+            throw new CommonException("", "Position must not be null");
+        }
+
         Position newPosition = positionRepository.save(position);
 
         // TODO 18-12-3 21:25 redis 缓存最近的position记录,缓存时间=最新位置保留时间
         // 用户标记作为key,每个用户只保留一个最新位置
-
+        if (position.getCreatedBy() != null) {
+            positionRedisTemplate.opsForValue().set(position.getCreatedBy(), position);
+        }
 
         return String.valueOf(newPosition.getId());
     }
