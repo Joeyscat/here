@@ -3,10 +3,7 @@ package fun.oook.here.repository.redis;
 import fun.oook.here.entity.Position;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.geo.Point;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -28,12 +25,14 @@ public class RedisRepositoryConfig {
      *
      * @return Lettuce connection factory
      */
-    @Bean
-    public LettuceConnectionFactory redisConnectionFactory() {
-
-        return new LettuceConnectionFactory(new RedisStandaloneConfiguration("127.0.0.1", 6379));
-    }
-
+//    @Bean(name = "redisConnectionFactory")
+//    public LettuceConnectionFactory redisConnectionFactory() {
+//
+//        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration("127.0.0.1", 6379);
+//        config.setPassword("");
+//
+//        return new LettuceConnectionFactory();
+//    }
     @Bean
     public RedisTemplate<String, Position> positionRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
 
