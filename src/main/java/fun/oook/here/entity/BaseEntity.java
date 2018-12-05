@@ -1,7 +1,6 @@
 package fun.oook.here.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedDate;
@@ -21,6 +20,10 @@ import java.sql.Timestamp;
  * @since 1.0
  */
 @MappedSuperclass
+@ToString
+@EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 abstract class BaseEntity implements Serializable {
 
 
