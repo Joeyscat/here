@@ -3,6 +3,7 @@ package fun.oook.here.repository.redis;
 import fun.oook.here.entity.Position;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.geo.Point;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
@@ -22,7 +23,7 @@ public class RedisRepositoryConfig {
 
     /**
      * create a new Lettuce connection factory
-     *
+     * <p>
      * https://docs.spring.io/spring-data/redis/docs/2.1.3.RELEASE/reference/html/#redis.repositories
      *
      * @return Lettuce connection factory
@@ -37,6 +38,17 @@ public class RedisRepositoryConfig {
     public RedisTemplate<String, Position> positionRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
 
         RedisTemplate<String, Position> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new RedisObjectSerializer());
+
+        return template;
+    }
+
+    @Bean
+    public RedisTemplate<String, String> geoRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+
+        RedisTemplate<String, String> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new RedisObjectSerializer());
