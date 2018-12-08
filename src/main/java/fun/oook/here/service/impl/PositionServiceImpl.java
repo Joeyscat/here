@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import fun.oook.here.common.CommonException;
 import fun.oook.here.entity.Position;
 import fun.oook.here.repository.jpa.PositionRepository;
+import fun.oook.here.repository.redis.RedisRepositoryConfig;
 import fun.oook.here.service.PositionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +68,7 @@ public class PositionServiceImpl implements PositionService {
 
         Distance distance = new Distance(1D);
         GeoResults<RedisGeoCommands.GeoLocation<String>> geoResults = geoRedisTemplate
-                .boundGeoOps("location").radius(position.getCreatedBy(), distance);
+                .boundGeoOps(RedisRepositoryConfig.REDIS_KEY_LOCATION).radius(position.getCreatedBy(), distance);
 
         position = new Position();
         assert geoResults != null;
@@ -108,7 +109,7 @@ public class PositionServiceImpl implements PositionService {
             Point point = new Point(Long.getLong(position.getLng()), Long.getLong(position.getLat()));
             String locationName = position.getCreatedBy();
 
-            geoRedisTemplate.boundGeoOps("location").add(new RedisGeoCommands.GeoLocation<>(locationName, point));
+            geoRedisTemplate.boundGeoOps(RedisRepositoryConfig.REDIS_KEY_LOCATION).add(new RedisGeoCommands.GeoLocation<>(locationName, point));
         }
 
         return String.valueOf(newPosition.getId());

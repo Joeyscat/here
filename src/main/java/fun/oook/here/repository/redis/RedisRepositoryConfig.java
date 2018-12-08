@@ -17,6 +17,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableRedisRepositories
 public class RedisRepositoryConfig {
 
+    public static final String REDIS_KEY_LOCATION = "location";
 
     /**
      * create a new Lettuce connection factory
