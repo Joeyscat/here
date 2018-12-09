@@ -41,10 +41,10 @@ public class PositionRestController extends AbstractRestController {
 
     @PostMapping(value = "/nearby", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public RestResponse<JSONArray> nearby(@RequestParam() Position position, @RequestParam(defaultValue = "10") int fetchSize) {
+    public RestResponse<JSONArray> nearby(@RequestBody Position position, @RequestParam(defaultValue = "10") int fetchSize) {
 
         return exceptionHandler(() -> {
-            LOGGER.info("Getting {} nearby positions {}-{}", fetchSize, position.getLng(), position.getLat());
+            LOGGER.info("Getting {} positions near {}", fetchSize, position);
 
             JSONArray positions = positionService.listPositionsNearby(position, fetchSize);
 

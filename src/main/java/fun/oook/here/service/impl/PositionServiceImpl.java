@@ -10,10 +10,7 @@ import fun.oook.here.service.PositionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.geo.Distance;
-import org.springframework.data.geo.GeoResult;
-import org.springframework.data.geo.GeoResults;
-import org.springframework.data.geo.Point;
+import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -21,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * implementation of {@link PositionService}
@@ -65,10 +63,19 @@ public class PositionServiceImpl implements PositionService {
 
         List<Position> positions = new ArrayList<>();
         // 从redis获取缓存
+        // TODO 18-12-9 14:59 通过name或者经纬度查询
 
-        Distance distance = new Distance(1D);
-        GeoResults<RedisGeoCommands.GeoLocation<String>> geoResults = geoRedisTemplate
-                .boundGeoOps(RedisRepositoryConfig.REDIS_KEY_LOCATION).radius(position.getCreatedBy(), distance);
+        if (position.getCreatedBy() == null) {
+            return null;
+        }
+        Distance distance = new Distance(1D, Metrics.KILOMETERS);
+        RedisGeoCommands.GeoRadiusCommandArgs args = RedisGeoCommands.GeoRadiusCommandArgs
+                .newGeoRadiusArgs().includeDistance().includeCoordinates().sortAscending().limit(fetchSize);
+        GeoResults<RedisGeoCommands.GeoLocation<String>> geoResults = geoRedisTemplate.opsForGeo()
+                .radius(RedisRepositoryConfig.REDIS_KEY_LOCATION, position.getCreatedBy(), distance, args);
+
+//        GeoResults<RedisGeoCommands.GeoLocation<String>> geoResults = geoRedisTemplate
+//                .boundGeoOps(RedisRepositoryConfig.REDIS_KEY_LOCATION).radius(position.getCreatedBy(), distance);
 
         position = new Position();
         assert geoResults != null;
@@ -105,12 +112,18 @@ public class PositionServiceImpl implements PositionService {
 
         // TODO 18-12-3 21:25 redis 缓存最近的position记录,缓存时间=最新位置保留时间
         // 用户标记作为key,每个用户只保留一个最新位置
-        if (position.getCreatedBy() != null) {
-            Point point = new Point(Long.getLong(position.getLng()), Long.getLong(position.getLat()));
-            String locationName = position.getCreatedBy();
-
-            geoRedisTemplate.boundGeoOps(RedisRepositoryConfig.REDIS_KEY_LOCATION).add(new RedisGeoCommands.GeoLocation<>(locationName, point));
+        if (position.getCreatedBy() == null) {
+            position.setCreatedBy(String.valueOf(UUID.randomUUID()));
         }
+        Double lng = Double.valueOf(position.getLng());
+        Double lat = Double.valueOf(position.getLat());
+        Point point = new Point(lng, lat);
+        String locationName = position.getCreatedBy();
+
+        Long addRes = geoRedisTemplate.opsForGeo().add(RedisRepositoryConfig.REDIS_KEY_LOCATION, new RedisGeoCommands.GeoLocation<>(locationName, point));
+        LOGGER.info("result for adding  {}", addRes);
+
+//        geoRedisTemplate.boundGeoOps(RedisRepositoryConfig.REDIS_KEY_LOCATION).add(new RedisGeoCommands.GeoLocation<>(locationName, point));
 
         return String.valueOf(newPosition.getId());
     }

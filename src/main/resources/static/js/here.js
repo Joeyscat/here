@@ -82,8 +82,35 @@ function savePosition(position) {
     });
 }
 
-$('#show-others').on('click', function () {
-    console.log('获取其他坐标');
+$('#nearby').on('click', function () {
+    console.log('获取附近的人的位置');
+    let data = {};
+    data.name = myPosition.name === undefined ? null : myPosition.name;
+    data.createdBy = 'joey';
+    data.lng = myPosition.lng;
+    data.lat = myPosition.lat;
+    $.ajax({
+        url: "/position/nearby",
+        data: JSON.stringify(data),
+        type: 'post',
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        success: function (result) {
+            console.log('获取坐标成功 ', result);
+            const positions = result.data;
+            if (positions === null){
+                console.log("附近没有人");
+                return;
+            }
+            positions.forEach(function (position) {
+                addMarker([position.lng, position.lat], endIcon, position.address, map);
+            })
+        }
+    });
+});
+
+$('#random').on('click', function () {
+    console.log('获取随机位置');
 
     $.ajax({
         url: "/position/random",
@@ -174,7 +201,7 @@ function onComplete(data) {
         }
     });
 
-    // savePosition(myPosition);
+    savePosition(myPosition);
 
     // document.getElementById('status').innerHTML = '定位成功';
     // var str = [];
