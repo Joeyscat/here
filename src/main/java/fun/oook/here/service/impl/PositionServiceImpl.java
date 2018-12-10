@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import fun.oook.here.common.CommonException;
 import fun.oook.here.entity.Position;
 import fun.oook.here.repository.jpa.PositionRepository;
+import fun.oook.here.repository.redis.GeoRedisRepository;
 import fun.oook.here.repository.redis.RedisRepositoryConfig;
 import fun.oook.here.service.PositionService;
 import org.slf4j.Logger;
@@ -16,7 +17,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +34,9 @@ public class PositionServiceImpl implements PositionService {
 
     @Autowired
     private PositionRepository positionRepository;
+
+    @Autowired
+    private GeoRedisRepository geoRedisRepository;
 
     // TODO 18-12-2 19:37 查询条件做好判空,以免传入null导致全表扫描
 
@@ -62,6 +65,7 @@ public class PositionServiceImpl implements PositionService {
     public JSONArray listPositionsNearby(Position position, int fetchSize) {
 
         List<Position> positions = new ArrayList<>();
+        JSONArray array = new JSONArray();
         // 从redis获取缓存
         // TODO 18-12-9 14:59 通过name或者经纬度查询
 
@@ -69,13 +73,9 @@ public class PositionServiceImpl implements PositionService {
             return null;
         }
         Distance distance = new Distance(1D, Metrics.KILOMETERS);
-        RedisGeoCommands.GeoRadiusCommandArgs args = RedisGeoCommands.GeoRadiusCommandArgs
-                .newGeoRadiusArgs().includeDistance().includeCoordinates().sortAscending().limit(fetchSize);
-        GeoResults<RedisGeoCommands.GeoLocation<String>> geoResults = geoRedisTemplate.opsForGeo()
-                .radius(RedisRepositoryConfig.REDIS_KEY_LOCATION, position.getCreatedBy(), distance, args);
 
-//        GeoResults<RedisGeoCommands.GeoLocation<String>> geoResults = geoRedisTemplate
-//                .boundGeoOps(RedisRepositoryConfig.REDIS_KEY_LOCATION).radius(position.getCreatedBy(), distance);
+        GeoResults<RedisGeoCommands.GeoLocation<String>> geoResults = geoRedisRepository.getNearByWithPlace(
+                GeoRedisRepository.GEO_KEY_POSITION, position.getCreatedBy(), distance, (long) fetchSize);
 
         position = new Position();
         assert geoResults != null;
@@ -83,17 +83,18 @@ public class PositionServiceImpl implements PositionService {
 
             RedisGeoCommands.GeoLocation<String> res = geoResult.getContent();
             Point point = res.getPoint();
-            LOGGER.info("P {}", point);
+            LOGGER.debug("{} {}", res.getName(), point);
 
-            position.setName(res.getName());
+            position.setCreatedBy(res.getName());
             position.setLng(String.valueOf(point.getX()));
             position.setLat(String.valueOf(point.getY()));
 
             positions.add(position);
         }
         // 返回point+name
+        array.addAll(positions);
 
-        return new JSONArray(Collections.singletonList(positions));
+        return array;
     }
 
     @Override
@@ -117,13 +118,8 @@ public class PositionServiceImpl implements PositionService {
         }
         Double lng = Double.valueOf(position.getLng());
         Double lat = Double.valueOf(position.getLat());
-        Point point = new Point(lng, lat);
-        String locationName = position.getCreatedBy();
 
-        Long addRes = geoRedisTemplate.opsForGeo().add(RedisRepositoryConfig.REDIS_KEY_LOCATION, new RedisGeoCommands.GeoLocation<>(locationName, point));
-        LOGGER.info("result for adding  {}", addRes);
-
-//        geoRedisTemplate.boundGeoOps(RedisRepositoryConfig.REDIS_KEY_LOCATION).add(new RedisGeoCommands.GeoLocation<>(locationName, point));
+        Long addRes = geoRedisRepository.geoAdd(GeoRedisRepository.GEO_KEY_POSITION, position.getCreatedBy(), lng, lat);
 
         return String.valueOf(newPosition.getId());
     }
