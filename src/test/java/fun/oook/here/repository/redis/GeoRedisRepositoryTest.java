@@ -1,5 +1,6 @@
 package fun.oook.here.repository.redis;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ public class GeoRedisRepositoryTest {
     private GeoRedisRepository geoRedisRepository;
 
     @Test
+    @Ignore
     public void testGeoAdd() {
 
         Long res = geoRedisRepository.geoAdd(GeoRedisRepository.GEO_KEY_POSITION, "joey", 23, 34);
@@ -28,6 +30,7 @@ public class GeoRedisRepositoryTest {
     }
 
     @Test
+    @Ignore
     public void testGeoGet() {
 
         List<Point> points = geoRedisRepository.geoGet(GeoRedisRepository.GEO_KEY_POSITION, "joey");
@@ -36,6 +39,7 @@ public class GeoRedisRepositoryTest {
     }
 
     @Test
+    @Ignore
     public void testGetNearByWithPlace() {
 
         Distance distance = new Distance(5, Metrics.KILOMETERS);

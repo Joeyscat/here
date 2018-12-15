@@ -4,13 +4,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import fun.oook.here.entity.Position;
 import fun.oook.here.service.PositionService;
-import fun.oook.here.web.RestResponse;
+import fun.oook.here.entity.RestResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.net.URISyntaxException;
 
 /**
  * @author Joey

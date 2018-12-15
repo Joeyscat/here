@@ -2,18 +2,16 @@ package fun.oook.here.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import fun.oook.here.common.CommonException;
+import fun.oook.here.common.HereException;
 import fun.oook.here.entity.Position;
 import fun.oook.here.repository.jpa.PositionRepository;
 import fun.oook.here.repository.redis.GeoRedisRepository;
-import fun.oook.here.repository.redis.RedisRepositoryConfig;
 import fun.oook.here.service.PositionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,11 +37,6 @@ public class PositionServiceImpl implements PositionService {
     private GeoRedisRepository geoRedisRepository;
 
     // TODO 18-12-2 19:37 查询条件做好判空,以免传入null导致全表扫描
-
-
-    @Autowired
-    private RedisTemplate<String, String> geoRedisTemplate;
-
 
     @Override
     public JSONObject getPositionById(Long id) {
@@ -106,7 +99,7 @@ public class PositionServiceImpl implements PositionService {
     public String savePosition(Position position) {
 
         if (position == null) {
-            throw new CommonException("", "Position must not be null");
+            throw new HereException("", "Position must not be null");
         }
 
         Position newPosition = positionRepository.save(position);

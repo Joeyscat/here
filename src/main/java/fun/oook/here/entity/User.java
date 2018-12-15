@@ -32,4 +32,9 @@ public class User extends BaseEntity implements Serializable {
     @Setter
     @Column
     private String phone;
+
+    @Getter
+    @Setter
+    @Column
+    private String email;
 }
