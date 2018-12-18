@@ -53,4 +53,15 @@ public class RedisRepositoryConfig {
 
         return template;
     }
+
+    @Bean
+    public RedisTemplate<String, String> userRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+
+        RedisTemplate<String, String> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new RedisObjectSerializer());
+
+        return template;
+    }
 }

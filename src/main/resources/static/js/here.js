@@ -66,7 +66,7 @@ function savePosition(position) {
     data.lat = position.lat;
 
     $.ajax({
-        url: "/position/save",
+        url: "/rest/position/save",
         data: JSON.stringify(data),
         type: 'post',
         contentType: "application/json; charset=utf-8",
@@ -90,7 +90,7 @@ $('#nearby').on('click', function () {
     data.lng = myPosition.lng;
     data.lat = myPosition.lat;
     $.ajax({
-        url: "/position/nearby",
+        url: "/rest/position/nearby",
         data: JSON.stringify(data),
         type: 'post',
         contentType: "application/json; charset=utf-8",
@@ -113,7 +113,7 @@ $('#random').on('click', function () {
     console.log('获取随机位置');
 
     $.ajax({
-        url: "/position/random",
+        url: "/rest/position/random",
         method: 'POST',
         success: function (result) {
             console.log('获取坐标成功 ', result);

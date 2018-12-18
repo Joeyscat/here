@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 1.0
  */
 @RestController
-@RequestMapping(value = "/position")
+@RequestMapping(value = "/rest/position")
 public class PositionRestController extends AbstractRestController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PositionRestController.class);
