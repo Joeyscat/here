@@ -1,6 +1,7 @@
 package fun.oook.here.repository.redis;
 
 import fun.oook.here.entity.Position;
+import fun.oook.here.entity.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -55,9 +56,9 @@ public class RedisRepositoryConfig {
     }
 
     @Bean
-    public RedisTemplate<String, String> userRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, User> userRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
 
-        RedisTemplate<String, String> template = new RedisTemplate<>();
+        RedisTemplate<String, User> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new RedisObjectSerializer());
