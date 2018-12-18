@@ -5,11 +5,11 @@ package fun.oook.here.common;
  * @date 2018-12-02
  * @since 1.0
  */
-public class CommonException extends RuntimeException{
+public class HereException extends RuntimeException{
 
     private String errCode;
 
-    public CommonException(String errCode,String message) {
+    public HereException(String errCode, String message) {
         super(message);
         this.errCode=errCode;
 

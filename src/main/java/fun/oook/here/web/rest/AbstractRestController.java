@@ -1,7 +1,7 @@
 package fun.oook.here.web.rest;
 
-import fun.oook.here.common.CommonException;
-import fun.oook.here.web.RestResponse;
+import fun.oook.here.common.HereException;
+import fun.oook.here.entity.RestResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +15,10 @@ abstract class AbstractRestController {
     private Logger logger = LoggerFactory.getLogger(AbstractRestController.class);
 
     interface ExceptionHandler<T> {
+        /**
+         *
+         * @return response
+         */
         RestResponse<T> handle();
     }
 
@@ -26,7 +30,7 @@ abstract class AbstractRestController {
 
             restResponse = exceptionHandler.handle();
 
-        } catch (CommonException e) {
+        } catch (HereException e) {
             logger.error(e.getMessage(), e);
             restResponse = new RestResponse<>(e.getErrCode(), e.getMessage());
         } catch (Exception e) {

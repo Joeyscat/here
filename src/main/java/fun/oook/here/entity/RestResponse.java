@@ -1,4 +1,4 @@
-package fun.oook.here.web;
+package fun.oook.here.entity;
 
 /**
  * @author Joey
@@ -7,9 +7,13 @@ package fun.oook.here.web;
  */
 public class RestResponse<T> {
 
-    //返回信息
+    /**
+     * 返回信息
+     */
     private String resultMsg;
-    //返回代码
+    /**
+     * 返回代码
+     */
     private String resultCode;
 
     private T data;

@@ -1,5 +1,6 @@
 package fun.oook.here.web;
 
+import fun.oook.here.entity.RestResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
