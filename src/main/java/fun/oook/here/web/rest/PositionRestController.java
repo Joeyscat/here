@@ -56,9 +56,10 @@ public class PositionRestController extends AbstractRestController {
 
     @PostMapping(value = "/save", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public RestResponse<JSONObject> savePosition(@RequestBody Position position) {
+    public RestResponse<JSONObject> savePosition(@RequestBody Position position, @UserAuth User user) {
 
         return exceptionHandler(() -> {
+            position.setCreatedBy(String.valueOf(user.getId()));
             LOGGER.info("Saving position {}", position);
 
             String newPositionId = positionService.savePosition(position);

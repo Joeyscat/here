@@ -2,6 +2,7 @@ package fun.oook.here.service.impl;
 
 import fun.oook.here.entity.User;
 import fun.oook.here.repository.jpa.UserRepository;
+import fun.oook.here.repository.redis.UserRedisRepository;
 import fun.oook.here.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserRedisRepository userRedisRepository;
 
     @Override
     public User login(String email, String password) {
@@ -36,5 +40,16 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return user;
+    }
+
+    @Override
+    public User findById(String id) {
+        return userRedisRepository.findById(id);
+    }
+
+    @Override
+    public boolean auth(User user) {
+
+        return true;
     }
 }

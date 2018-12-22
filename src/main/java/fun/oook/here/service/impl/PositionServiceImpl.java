@@ -101,14 +101,14 @@ public class PositionServiceImpl implements PositionService {
         if (position == null) {
             throw new HereException("", "Position must not be null");
         }
+        if (position.getCreatedBy() == null) {
+            throw new HereException("", "Position.createdBy must not be null");
+        }
 
         Position newPosition = positionRepository.save(position);
 
         // TODO 18-12-3 21:25 redis 缓存最近的position记录,缓存时间=最新位置保留时间
         // 用户标记作为key,每个用户只保留一个最新位置
-        if (position.getCreatedBy() == null) {
-            position.setCreatedBy(String.valueOf(UUID.randomUUID()));
-        }
         Double lng = Double.valueOf(position.getLng());
         Double lat = Double.valueOf(position.getLat());
 

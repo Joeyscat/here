@@ -3,6 +3,7 @@ package fun.oook.here.web.arg;
 import fun.oook.here.common.HereException;
 import fun.oook.here.entity.User;
 import fun.oook.here.repository.redis.UserRedisRepository;
+import fun.oook.here.service.UserService;
 import fun.oook.here.web.anno.UserAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Autowired
-    private UserRedisRepository userRedisRepository;
+    private UserService userService;
 
 
     @Override
@@ -38,14 +39,15 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         User user = null;
         if (request != null && request.getHeader("token") != null){
             String token = request.getHeader("token");
-            user = userRedisRepository.findById(token);
+            user = userService.findById(token);
         }
 
         if (user == null && request != null) {
+            // TODO 18-12-18 22:34 NOT safe
             user = request.getSession().getAttribute("online") != null ? (User) request.getSession().getAttribute("online") : null;
         }
 
-        if (user == null) {
+        if (user == null || !userService.auth(user)) {
             throw new HereException("EEEEEEE", "授权过期或授权失败");
         }
 

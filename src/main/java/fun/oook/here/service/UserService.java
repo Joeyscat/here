@@ -11,6 +11,9 @@ import java.util.UUID;
  */
 public interface UserService {
 
+    User login(String email, String password);
 
-    public User login(String email, String password);
+    User findById(String id);
+
+    boolean auth(User user);
 }
