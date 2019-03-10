@@ -2,7 +2,6 @@ package fun.oook.here.web.arg;
 
 import fun.oook.here.common.HereException;
 import fun.oook.here.entity.User;
-import fun.oook.here.repository.redis.UserRedisRepository;
 import fun.oook.here.service.UserService;
 import fun.oook.here.web.anno.UserAuth;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +14,15 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * {@link fun.oook.here.config.ClientResourcesConfig}
+ *
  * @author Joey
  * @version 1.0
  * @since 2018/12/18 18:19
  */
 public class UserArgumentResolver implements HandlerMethodArgumentResolver {
+
+    // TODO 18-12-22 23:00 how to inject userService with ClientResourcesConfig
 
     @Autowired
     private UserService userService;
@@ -37,14 +40,16 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
 
         User user = null;
-        if (request != null && request.getHeader("token") != null){
+        // 目前token检验为实现
+        if (request != null && request.getHeader("token") != null) {
             String token = request.getHeader("token");
-            user = userService.findById(token);
+
+            user = userService.tokenVerify(token);
         }
 
         if (user == null && request != null) {
             // TODO 18-12-18 22:34 NOT safe
-            user = request.getSession().getAttribute("online") != null ? (User) request.getSession().getAttribute("online") : null;
+            user = request.getSession().getAttribute("here_auth") != null ? (User) request.getSession().getAttribute("here_auth") : null;
         }
 
         if (user == null || !userService.auth(user)) {

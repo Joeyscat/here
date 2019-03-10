@@ -64,10 +64,6 @@ public class GeoRedisRepository {
         GeoResults<RedisGeoCommands.GeoLocation<String>> results = geoRedisTemplate.opsForGeo()
                 .radius(geoKey,member,distance,args);
 
-        if (results == null){
-            return null;
-        }
-
         return results;
     }
 }

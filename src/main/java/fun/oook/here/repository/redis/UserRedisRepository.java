@@ -13,10 +13,18 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserRedisRepository {
 
+    private final RedisTemplate<String, User> userRedisTemplate;
+
     @Autowired
-    private RedisTemplate<String, User> userRedisTemplate;
+    public UserRedisRepository(RedisTemplate<String, User> userRedisTemplate) {
+        this.userRedisTemplate = userRedisTemplate;
+    }
 
     public User findById(String id) {
         return userRedisTemplate.opsForValue().get(id);
+    }
+
+    public void saveVisitor(User user) {
+        userRedisTemplate.opsForValue().set(String.valueOf(user.getId()), user);
     }
 }

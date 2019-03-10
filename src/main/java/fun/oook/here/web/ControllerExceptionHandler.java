@@ -38,6 +38,6 @@ public class ControllerExceptionHandler {
 
         logger.warn("Returning HTTP 400 Bad Request", e);
 
-        return new RestResponse<>("E000-", e.getMessage());
+        return new RestResponse<>("E000-", e.getMessage() + ". " + e.getCause());
     }
 }

@@ -27,11 +27,32 @@ public class UserServiceImpl implements UserService {
     public User login(String email, String password) {
 
         User user = userRepository.findByEmail(email);
-        if (user != null) {
-            return user;
-        }
+        return user;
+    }
 
-        user = new User();
+    @Override
+    public User tokenVerify(String id) {
+        return userRedisRepository.findById(id);
+    }
+
+    @Override
+    public boolean auth(User user) {
+
+        return true;
+    }
+
+    @Override
+    public User visitor() {
+        User user = new User();
+        user.setUid(UUID.randomUUID().toString());
+        userRedisRepository.saveVisitor(user);
+        return user;
+    }
+
+    @Override
+    public User register(String email, String password) {
+
+        User user = new User();
         user.setUid(UUID.randomUUID().toString());
         user.setName(email);
         user.setPassword(password);
@@ -40,16 +61,5 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return user;
-    }
-
-    @Override
-    public User findById(String id) {
-        return userRedisRepository.findById(id);
-    }
-
-    @Override
-    public boolean auth(User user) {
-
-        return true;
     }
 }

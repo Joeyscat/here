@@ -11,9 +11,45 @@ import java.util.UUID;
  */
 public interface UserService {
 
+    /**
+     * User login
+     *
+     * @param email    email
+     * @param password password
+     * @return user
+     */
     User login(String email, String password);
 
-    User findById(String id);
-
+    /**
+     * User Authentication
+     *
+     * @param user user
+     * @return true if user verification succeeded
+     */
     boolean auth(User user);
+
+    /**
+     * Token verification
+     *
+     * @param token token
+     * @return return user if user verification succeeded
+     */
+    User tokenVerify(String token);
+
+    /**
+     * make a visitor, only save in redis
+     *
+     * @return visitor
+     */
+    User visitor();
+
+    /**
+     * User registration
+     *
+     * @param email    email
+     * @param password password
+     * @return user
+     */
+    User register(String email, String password);
+
 }
