@@ -1,4 +1,4 @@
-package fun.oook.here.web.rest;
+package fun.oook.here.controller.rest;
 
 import com.alibaba.fastjson.JSONObject;
 import fun.oook.here.entity.RestResponse;

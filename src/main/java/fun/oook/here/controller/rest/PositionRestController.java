@@ -1,12 +1,10 @@
-package fun.oook.here.web.rest;
+package fun.oook.here.controller.rest;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import fun.oook.here.entity.Position;
-import fun.oook.here.entity.User;
-import fun.oook.here.service.PositionService;
 import fun.oook.here.entity.RestResponse;
-import fun.oook.here.web.anno.UserAuth;
+import fun.oook.here.service.PositionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +27,12 @@ public class PositionRestController extends AbstractRestController {
 
     @PostMapping(value = "/random", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public RestResponse<JSONArray> random(@RequestParam(defaultValue = "10") int fetchSize, @UserAuth User user) {
+    public RestResponse<JSONArray> random(@RequestParam(defaultValue = "10") int fetchSize) {
 
         return exceptionHandler(() -> {
 
             LOGGER.info("Getting random positions {}", fetchSize);
-            LOGGER.debug("USER: {}", user);
+            LOGGER.debug("USER: {}", "");
             JSONArray positions = positionService.listPositionsRandom(fetchSize);
 
             return new RestResponse<JSONArray>().normalRestResponse(positions);
@@ -56,10 +54,11 @@ public class PositionRestController extends AbstractRestController {
 
     @PostMapping(value = "/save", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public RestResponse<JSONObject> savePosition(@RequestBody Position position, @UserAuth User user) {
+    public RestResponse<JSONObject> savePosition(@RequestBody Position position/*, @UserAuth User user*/) {
 
         return exceptionHandler(() -> {
-            position.setCreatedBy(String.valueOf(user.getId()));
+//            position.setCreatedBy(String.valueOf(user.getId()));
+            position.setCreatedBy("12");
             LOGGER.info("Saving position {}", position);
 
             String newPositionId = positionService.savePosition(position);

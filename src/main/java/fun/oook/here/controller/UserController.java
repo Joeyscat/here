@@ -1,7 +1,8 @@
-package fun.oook.here.web;
+package fun.oook.here.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @author Joey
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @since 1.0
  */
 @Controller
+@RequestMapping("/user")
 public class UserController {
 
     @GetMapping(value = "/login")

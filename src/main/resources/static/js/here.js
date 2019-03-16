@@ -64,6 +64,7 @@ function savePosition(position) {
     data.address = position.address;
     data.lng = position.lng;
     data.lat = position.lat;
+    data.user=
 
     $.ajax({
         url: "/rest/position/save",
